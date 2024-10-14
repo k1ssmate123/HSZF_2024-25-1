@@ -26,15 +26,16 @@ namespace IOQ9ET_HSZF_2024251
 
             IActors actorService = host.Services.GetRequiredService<IActors>();
 
-
-            ToConsole<Actor>(actorService.ListByActor());
+         
+            ToConsole(actorService.ListByActor());
 
             Actor a = actorService.GetActorByName("SEGG");
 
            /* var subMenu = new ConsoleMenu(args, level: 1)
-             .Add("Színészek kilistázása", () => ToConsole(actorService.ListByActor()))
-             .Add("Karakterek kilistázása", () => ToConsole(actorService.ListByCharacter()))
-             .Add("Filmek kilistázása", () => ToConsole(actorService.ListByMovie()))
+             .Add("Show actors", () => ToConsole(actorService.ListByActor()))
+             .Add("Show characters", () => ToConsole(actorService.ListByCharacter()))
+             .Add("Show movies", () => ToConsole(actorService.ListByMovie()))
+             .Add("Back", ConsoleMenu.Close)
              .Configure(config =>
                {
                    config.Selector = ":3 ";
@@ -45,19 +46,19 @@ namespace IOQ9ET_HSZF_2024251
                });
 
             var menu = new ConsoleMenu(args, level: 0)
-            .Add("Adatok kilistázása", subMenu.Show)
-            .Add("Joe filmjei", () => Console.WriteLine("One"))
-            .Add("Három legnagyobb bevételű film", () => Console.WriteLine("Two"))
-            .Add("Színészek és karaktereik", () => Console.WriteLine("Three"))
-            .Add("Filmek és hozzájuk tartozó színészek", () => Console.WriteLine("Three"))
-            .Add("Legtöbbet együttjátszó színészek", () => Console.WriteLine("Three"))
+            .Add("Show lists", subMenu.Show)
+            .Add("Movies of Joe(s)", () => ToConsole(actorService.GetMoviesByDirector("Joe")))
+            .Add("Three highest grossing movie", () => Console.WriteLine("Two"))
+            .Add("Actors and their characters", () => Console.WriteLine("Three"))
+            .Add("Movies and the actors", () => Console.WriteLine("Three"))
+            .Add("Actors that played together the most", () => Console.WriteLine("Three"))
             //.Add("Change me", (thisMenu) => thisMenu.CurrentItem.Name = "I am changed!") 
             .Add("Exit", () => Environment.Exit(0))
             .Configure(config =>
             {
                 config.Selector = "+ ";
                 config.EnableFilter = true;
-                config.Title = "Marvel filmek:";
+                config.Title = "Marvel movies:";
                 config.EnableWriteTitle = true;
                 config.EnableBreadcrumb = true;
             });
@@ -65,9 +66,10 @@ namespace IOQ9ET_HSZF_2024251
             menu.Show();*/
         }
 
-         static void ToConsole<T>(IEnumerable<T> list)
+        static void ToConsole<T>(IEnumerable<T> list)
         {
-           
+            Console.Clear();
+    
             foreach (var item in list)
             {
                 Console.WriteLine(item);
