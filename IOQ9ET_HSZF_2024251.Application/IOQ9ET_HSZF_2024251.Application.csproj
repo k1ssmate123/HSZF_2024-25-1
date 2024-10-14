@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IOQ9ET_HSZF_2024251.Model\IOQ9ET_HSZF_2024251.Model.csproj" />
+    <ProjectReference Include="..\IOQ9ET_HSZF_2024251.Persistence.MsSql\IOQ9ET_HSZF_2024251.Persistence.MsSql.csproj" />
+  </ItemGroup>
+
+</Project>

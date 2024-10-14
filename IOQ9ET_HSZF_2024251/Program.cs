@@ -1,0 +1,1 @@
+﻿var host = Host.CreateDefaultBuilder().ConfigureServices
