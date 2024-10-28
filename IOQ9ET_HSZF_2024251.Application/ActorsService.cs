@@ -35,7 +35,7 @@ namespace IOQ9ET_HSZF_2024251.Application
 
         public Actor GetActorByName(string actorName)
         {
-            return ActorDataProvider.GetActorByName(actorName); ;
+            return ActorDataProvider.GetActorByName(actorName); 
         }
 
         public HashSet<Actor> ListByActor()

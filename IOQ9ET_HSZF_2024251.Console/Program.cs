@@ -27,11 +27,11 @@ namespace IOQ9ET_HSZF_2024251
             IActors actorService = host.Services.GetRequiredService<IActors>();
 
          
-            ToConsole(actorService.ListByActor());
+       
 
-            Actor a = actorService.GetActorByName("SEGG");
+         
 
-           /* var subMenu = new ConsoleMenu(args, level: 1)
+            var subMenu = new ConsoleMenu(args, level: 1)
              .Add("Show actors", () => ToConsole(actorService.ListByActor()))
              .Add("Show characters", () => ToConsole(actorService.ListByCharacter()))
              .Add("Show movies", () => ToConsole(actorService.ListByMovie()))
@@ -61,9 +61,9 @@ namespace IOQ9ET_HSZF_2024251
                 config.Title = "Marvel movies:";
                 config.EnableWriteTitle = true;
                 config.EnableBreadcrumb = true;
-            });
+            }); 
 
-            menu.Show();*/
+            menu.Show();
         }
 
         static void ToConsole<T>(IEnumerable<T> list)
@@ -74,6 +74,9 @@ namespace IOQ9ET_HSZF_2024251
             {
                 Console.WriteLine(item);
             }
+            Console.ReadKey();
         }
     }
+
+
 }

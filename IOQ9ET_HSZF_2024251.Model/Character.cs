@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,10 +10,17 @@ namespace IOQ9ET_HSZF_2024251.Model
 {
     public class Character
     {
-        public string Name { get; private set; }   
-        public string Alias { get; private set; }
-        public List<string> Abilities { get; private set; }
-        public List<Movie> Movies { get; private set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("alias")]
+        public string Alias { get; set; }
+
+        [JsonProperty("abilities")]
+        public List<string> Abilities { get; set; }
+
+        [JsonProperty("movies")]
+        public List<Movie> Movies { get; set; }
 
         public Character(string name, string alias, List<string> abilities, List<Movie> movies)
         {

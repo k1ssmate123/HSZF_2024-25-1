@@ -1,13 +1,22 @@
-﻿namespace IOQ9ET_HSZF_2024251.Model
+﻿using Newtonsoft.Json;
+
+namespace IOQ9ET_HSZF_2024251.Model
 {
 
     public class Actor
     {
-        public string Name { get; private set; }
-        public int Age { get; private set; }
-        public NationalityEnum Nationality { get; private set; }
-        public List<Character> Characters { get; private set; }
 
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("age")]
+        public int Age { get; set; }
+
+        [JsonProperty("nationality")]
+        public NationalityEnum Nationality { get; set; }
+
+        [JsonProperty("characters")]
+        public List<Character> Characters { get; set; }
         public Actor(string name, int age, NationalityEnum nationality, List<Character> characters)
         {
             Name = name;

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\IOQ9ET_HSZF_2024251.Model\IOQ9ET_HSZF_2024251.Model.csproj" />
   </ItemGroup>
 

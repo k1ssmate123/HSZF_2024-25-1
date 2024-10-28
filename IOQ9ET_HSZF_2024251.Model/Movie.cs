@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,15 +9,22 @@ namespace IOQ9ET_HSZF_2024251.Model
 {
     public class Movie
     {
-        public string Title { get; private set; }
-        public int ReleaseDate { get; private set; }
-        public string Director { get; private set; }
-        public uint BoxOffice { get; private set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
+        [JsonProperty("release_year")]
+        public int ReleaseYear { get; set; }
+
+        [JsonProperty("director")]
+        public string Director { get; set; }
+
+        [JsonProperty("box_office")]
+        public long BoxOffice { get; set; }
 
         public Movie(string title, int releaseDate, string director, uint boxOffice)
         {
             Title = title;
-            ReleaseDate = releaseDate;
+            ReleaseYear = releaseDate;
             Director = director;
             BoxOffice = boxOffice;
         }
@@ -27,7 +35,7 @@ namespace IOQ9ET_HSZF_2024251.Model
 
         public override string ToString()
         {
-            return $"Title: {Title}\n\tRelease date: {ReleaseDate}\n\tDirector: {Director}\n\tBox office: {BoxOffice}";
+            return $"Title: {Title}\n\tRelease date: {ReleaseYear}\n\tDirector: {Director}\n\tBox office: {BoxOffice}";
         }
     }
 }

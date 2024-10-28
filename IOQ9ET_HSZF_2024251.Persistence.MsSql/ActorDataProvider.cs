@@ -25,6 +25,7 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
         public ActorDataProvider(AppDbContext context)
         {
             this.context = context;
+            context.ReadJson();
         }
 
 
@@ -77,7 +78,7 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
         public Actor GetActorByName(string actorName)
         {
            
-            return context.Actors.First(x=>x.Name == actorName);    
+            return context.Actors.First(x=>x.Name.Contains(actorName));    
         }
 
         public List<Character> GetCharactersByActorName(string actorName)
