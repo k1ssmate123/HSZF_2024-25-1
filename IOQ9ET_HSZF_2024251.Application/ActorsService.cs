@@ -8,12 +8,12 @@ namespace IOQ9ET_HSZF_2024251.Application
     {
         Actor GetActorByName(string actorName);
         //Movie GetMovieByDirector(string directorName);
-        List<Character> GetCharactersByActorName(string actorName);
+        ICollection<Character> GetCharactersByActorName(string actorName);
         HashSet<Actor> ListByActor();
         HashSet<Character> ListByCharacter();     
         HashSet<Movie> ListByMovie();
 
-        List<Movie> GetMoviesByDirector(string directorName);
+        ICollection<Movie> GetMoviesByDirector(string directorName);
     }
     public class ActorsService : IActors
     {
@@ -51,12 +51,12 @@ namespace IOQ9ET_HSZF_2024251.Application
             return ActorDataProvider.ListByMovie();
         }
 
-        public List<Character> GetCharactersByActorName(string actorName)
+        public ICollection<Character> GetCharactersByActorName(string actorName)
         {
             return ActorDataProvider.GetCharactersByActorName(actorName);
         }
 
-        public List<Movie> GetMoviesByDirector(string directorName)
+        public ICollection<Movie> GetMoviesByDirector(string directorName)
         {
             return ActorDataProvider.GetMoviesByDirector(directorName);
         }

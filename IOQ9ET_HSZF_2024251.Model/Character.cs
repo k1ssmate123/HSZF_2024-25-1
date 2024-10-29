@@ -1,15 +1,25 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace IOQ9ET_HSZF_2024251.Model
 {
     public class Character
     {
+
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Id { get; set; }
+ 
         [JsonProperty("name")]
         public string Name { get; set; }
 
@@ -20,18 +30,20 @@ namespace IOQ9ET_HSZF_2024251.Model
         public List<string> Abilities { get; set; }
 
         [JsonProperty("movies")]
-        public List<Movie> Movies { get; set; }
+        public virtual ICollection<Movie> Movie { get; set; }
 
-        public Character(string name, string alias, List<string> abilities, List<Movie> movies)
+        public Character(string name, string alias, List<string> abilities, ICollection<Movie> movies)
         {
             Name = name;
             Alias = alias;
             Abilities = abilities;
-            Movies = movies;
+            Movie = movies;
+            Id = Guid.NewGuid().ToString();
         }
         public Character()
         {
-            
+            Movie = new HashSet<Movie>();
+            Id = Guid.NewGuid().ToString();
         }
 
         public override string ToString()

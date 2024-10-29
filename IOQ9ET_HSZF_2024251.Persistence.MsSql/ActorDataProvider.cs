@@ -1,13 +1,22 @@
 ﻿using IOQ9ET_HSZF_2024251.Model;
+using Newtonsoft.Json;
 
 namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
+
 {
+
+    public class JsonObject
+    {
+        [JsonProperty("actors")]
+        public List<Actor> Actors { get; set; }
+    }
+
     public delegate void ListingEvent(string message);
     public interface IActorDataProvider
     {
         Actor GetActorByName(string actorName);
         //Movie GetMovieByDirector(string directorName);
-        List<Character> GetCharactersByActorName(string actorName);
+        ICollection<Character> GetCharactersByActorName(string actorName);
         HashSet<Character> ListByCharacter();
         HashSet<Actor> ListByActorName();
         HashSet<Movie> ListByMovie();
@@ -19,13 +28,23 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
     public class ActorDataProvider : IActorDataProvider
     {
         private readonly AppDbContext context;
-       
+
 
         public event ListingEvent ListingEventHandler;
         public ActorDataProvider(AppDbContext context)
         {
             this.context = context;
-            context.ReadJson();
+            var rootObject = JsonConvert.DeserializeObject<JsonObject>(File.ReadAllText("movies.json"));
+            foreach (var item in rootObject.Actors)
+            {
+                context.Actors.Add(item);
+            }
+            try { context.SaveChanges(); }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.InnerException.Message);
+                Console.ReadKey();
+            }
         }
 
 
@@ -48,9 +67,9 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
             ListingEventHandler.Invoke("All characters have been listed at: " + DateTime.Now);
             foreach (var item in context.Actors)
             {
-                foreach (var chars in item.Characters)
+                foreach (var chars in item.Character)
                 {
-                    characters.Add(chars);
+                    characters.Add(chars as Character);
                 }
             }
             return characters;
@@ -60,13 +79,14 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
         {
             HashSet<Movie> movieList = new HashSet<Movie>();
             ListingEventHandler.Invoke("All movies have been listed at: " + DateTime.Now);
+
             foreach (var item in context.Actors)
             {
-                foreach (var chars in item.Characters)
+                foreach (var chars in item.Character)
                 {
-                    foreach (var movies in chars.Movies)
+                    foreach (var movies in chars.Movie)
                     {
-                        movieList.Add(movies);
+                        movieList.Add(movies as Movie);
                     }
                 }
             }
@@ -77,23 +97,23 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
 
         public Actor GetActorByName(string actorName)
         {
-           
-            return context.Actors.First(x=>x.Name.Contains(actorName));    
+
+            return context.Actors.First(x => x.Name.Contains(actorName));
         }
 
-        public List<Character> GetCharactersByActorName(string actorName)
+        public ICollection<Character> GetCharactersByActorName(string actorName)
         {
-            
-            return GetActorByName(actorName).Characters;
-            
-           //return context.Actors.Select(x=>GetActorByName(actorName));
+
+            return GetActorByName(actorName).Character;
+
+            //return context.Actors.Select(x=>GetActorByName(actorName));
         }
 
         public List<Movie> GetMoviesByDirector(string directorName)
         {
-           
+
             return ListByMovie().Where(x => x.Director.Split(' ')[0] == directorName).ToList();
-            
+
             //return context.Actors.Select(x => x.Characters.Select(y => y.Movies.Where(z => z.Director.Contains(directorName))).Select(a=>a));
         }
     }

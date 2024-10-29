@@ -4,6 +4,9 @@ using IOQ9ET_HSZF_2024251.Model;
 using IOQ9ET_HSZF_2024251.Persistence.MsSql;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Threading.Channels;
+using System.Xml.Serialization;
 
 namespace IOQ9ET_HSZF_2024251
 {
@@ -32,9 +35,9 @@ namespace IOQ9ET_HSZF_2024251
          
 
             var subMenu = new ConsoleMenu(args, level: 1)
-             .Add("Show actors", () => ToConsole(actorService.ListByActor()))
-             .Add("Show characters", () => ToConsole(actorService.ListByCharacter()))
-             .Add("Show movies", () => ToConsole(actorService.ListByMovie()))
+             .Add("Show actors", () => ToConsole(actorService.ListByActor(), Console.WriteLine))
+             .Add("Show characters", () => ToConsole(actorService.ListByCharacter(), Console.WriteLine))
+             .Add("Show movies", () => ToConsole(actorService.ListByMovie(), Console.WriteLine))
              .Add("Back", ConsoleMenu.Close)
              .Configure(config =>
                {
@@ -47,16 +50,23 @@ namespace IOQ9ET_HSZF_2024251
 
             var menu = new ConsoleMenu(args, level: 0)
             .Add("Show lists", subMenu.Show)
-            .Add("Movies of Joe(s)", () => ToConsole(actorService.GetMoviesByDirector("Joe")))
-            .Add("Three highest grossing movie", () => Console.WriteLine("Two"))
-            .Add("Actors and their characters", () => Console.WriteLine("Three"))
-            .Add("Movies and the actors", () => Console.WriteLine("Three"))
+            .Add("Movies of Joe(s)", () => ToConsole(actorService.GetMoviesByDirector("Joe"), x=>Console.WriteLine(x.Title+"\n\t"+x.Director)))
+            .Add("Three highest grossing movie", () => ToConsole(actorService.ListByMovie().GroupBy(x => x.Title).Select(x => new { Title = x.Key, Grossing = x.Average(x=>x.BoxOffice)}).OrderByDescending(x=>x.Grossing).Take(3), x=>Console.WriteLine("Title: "+x.Title+"\n\tGrossing: "+x.Grossing)))
+            .Add("Actors and their characters", () => ToConsole(actorService.ListByActor(), x => {
+                Console.WriteLine(x.Name);
+                foreach (var item in x.Character)
+                {
+                    Console.WriteLine("\t"+item.Name);
+                }
+            }))
+            .Add("Movies and the actors", ()=>Console.WriteLine())
             .Add("Actors that played together the most", () => Console.WriteLine("Three"))
             //.Add("Change me", (thisMenu) => thisMenu.CurrentItem.Name = "I am changed!") 
+             .Add("Export movies to XML", () => ExportXml(actorService.ListByMovie()))
             .Add("Exit", () => Environment.Exit(0))
             .Configure(config =>
             {
-                config.Selector = "+ ";
+                config.Selector = "+";
                 config.EnableFilter = true;
                 config.Title = "Marvel movies:";
                 config.EnableWriteTitle = true;
@@ -66,16 +76,32 @@ namespace IOQ9ET_HSZF_2024251
             menu.Show();
         }
 
-        static void ToConsole<T>(IEnumerable<T> list)
+        static void ExportXml(HashSet<Movie> list)
+        {
+            XmlSerializer writer = new XmlSerializer(typeof(HashSet<Movie>));
+            string path = Path.Combine(Directory.GetCurrentDirectory(),"MoviesXml");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            FileStream file = File.Create(Path.Combine(path,"data.xml"));
+
+            writer.Serialize(file, list);
+
+            file.Close();
+        }
+        static void ToConsole<T>(IEnumerable<T> list, Action<T> action)
         {
             Console.Clear();
     
             foreach (var item in list)
             {
-                Console.WriteLine(item);
+                action(item);
             }
             Console.ReadKey();
         }
+        
+       
     }
 
 
