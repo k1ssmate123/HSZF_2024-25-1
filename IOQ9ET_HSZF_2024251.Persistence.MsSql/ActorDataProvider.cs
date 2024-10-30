@@ -1,6 +1,5 @@
 ﻿using IOQ9ET_HSZF_2024251.Model;
 using Newtonsoft.Json;
-
 namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
 
 {
@@ -21,6 +20,13 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
         HashSet<Actor> ListByActorName();
         HashSet<Movie> ListByMovie();
 
+
+        void AddActor(string name, int age, string nationality);
+        void RemoveActor(Actor actor);
+        void ConnectCharacterToActor(Character character, string actorName);
+
+
+
         public event ListingEvent ListingEventHandler;
         List<Movie> GetMoviesByDirector(string directorName);
 
@@ -34,17 +40,8 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
         public ActorDataProvider(AppDbContext context)
         {
             this.context = context;
-            var rootObject = JsonConvert.DeserializeObject<JsonObject>(File.ReadAllText("movies.json"));
-            foreach (var item in rootObject.Actors)
-            {
-                context.Actors.Add(item);
-            }
-            try { context.SaveChanges(); }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.InnerException.Message);
-                Console.ReadKey();
-            }
+            context.ReadJson();
+
         }
 
 
@@ -84,7 +81,7 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
             {
                 foreach (var chars in item.Character)
                 {
-                    foreach (var movies in chars.Movie)
+                    foreach (var movies in chars.Movies)
                     {
                         movieList.Add(movies as Movie);
                     }
@@ -94,11 +91,29 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
         }
         #endregion
 
+        public void ConnectCharacterToActor(Character character, string actorName)
+        {
+            GetActorByName(actorName).Character.Add(character);
+            context.SaveChanges();
+        }
+
+
+        public void RemoveActor(Actor actor)
+        {
+            context.Remove(actor);
+            context.SaveChanges();
+        }
+
 
         public Actor GetActorByName(string actorName)
         {
+            return context.Actors.FirstOrDefault(x => x.Name.ToLower() == actorName.ToLower());
+        }
 
-            return context.Actors.First(x => x.Name.Contains(actorName));
+        public void AddActor(string name, int age, string nationality)
+        {
+            context.Actors.Add(new Actor(name, age, nationality));
+            context.SaveChanges();
         }
 
         public ICollection<Character> GetCharactersByActorName(string actorName)

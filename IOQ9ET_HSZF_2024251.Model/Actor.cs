@@ -19,23 +19,21 @@ namespace IOQ9ET_HSZF_2024251.Model
         public int Age { get; set; }
 
         [JsonProperty("nationality")]
-        public NationalityEnum Nationality { get; set; }
+        public string Nationality { get; set; }
 
         [JsonProperty("characters")]
         public virtual ICollection<Character> Character { get; set; }
-        public Actor(string name, int age, NationalityEnum nationality, List<Character> characters)
+        public Actor(string name, int age, string nationality)
         {
             Name = name;
             Age = age;
             Nationality = nationality;
-            Character = characters;
-            Id = Guid.NewGuid().ToString();
         }
 
         public Actor()
         {
             Character = new HashSet<Character>();
-            Id = Guid.NewGuid().ToString();
+        
         }
 
         public override string ToString()

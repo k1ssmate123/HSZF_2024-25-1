@@ -13,10 +13,9 @@ namespace IOQ9ET_HSZF_2024251.Model
 {
     public class Movie
     {
-
+        [XmlIgnore]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [XmlIgnore]
         public string Id { get; set; }
         [JsonProperty("title")]
         public string Title { get; set; }
@@ -31,26 +30,28 @@ namespace IOQ9ET_HSZF_2024251.Model
         public long BoxOffice { get; set; }
 
         [XmlIgnore]
-        public virtual ICollection<Character> Character{ get; set; }
+        public virtual ICollection<Character> Characters{ get; set; }
 
-        public Movie(string title, int releaseDate, string director, uint boxOffice, ICollection<Character> characters)
+        public Movie(string title, int releaseDate, string director, uint boxOffice)
         {
             Title = title;
             ReleaseYear = releaseDate;
             Director = director;
             BoxOffice = boxOffice;
-            Id = Guid.NewGuid().ToString();
-            Character = characters;
+          
+            Characters = new HashSet<Character>();
         }
         public Movie()
         {
-            Character = new HashSet<Character>();
-            Id = Guid.NewGuid().ToString();
+            Characters = new HashSet<Character>();
+          
         }
 
         public override string ToString()
         {
             return $"Title: {Title}\n\tRelease date: {ReleaseYear}\n\tDirector: {Director}\n\tBox office: {BoxOffice}";
         }
+
+       
     }
 }

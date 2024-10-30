@@ -12,7 +12,9 @@ namespace IOQ9ET_HSZF_2024251.Application
         HashSet<Actor> ListByActor();
         HashSet<Character> ListByCharacter();     
         HashSet<Movie> ListByMovie();
-
+        void AddActor(string name, int age, string nationality);
+        void RemoveActor(Actor actor);
+        void ConnectCharacterToActor(Character character, string actorName);
         ICollection<Movie> GetMoviesByDirector(string directorName);
     }
     public class ActorsService : IActors
@@ -32,7 +34,11 @@ namespace IOQ9ET_HSZF_2024251.Application
         }
 
      
+        public void RemoveActor(Actor actor)
+        {
+            ActorDataProvider.RemoveActor(actor);
 
+        }
         public Actor GetActorByName(string actorName)
         {
             return ActorDataProvider.GetActorByName(actorName); 
@@ -59,6 +65,14 @@ namespace IOQ9ET_HSZF_2024251.Application
         public ICollection<Movie> GetMoviesByDirector(string directorName)
         {
             return ActorDataProvider.GetMoviesByDirector(directorName);
+        }
+        public void AddActor(string name, int age, string nationality)
+        {
+            ActorDataProvider.AddActor(name, age, nationality);
+        }
+        public void ConnectCharacterToActor(Character character, string actorName)
+        {
+            ActorDataProvider.ConnectCharacterToActor(character, actorName);
         }
     }
 }

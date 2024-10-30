@@ -30,20 +30,20 @@ namespace IOQ9ET_HSZF_2024251.Model
         public List<string> Abilities { get; set; }
 
         [JsonProperty("movies")]
-        public virtual ICollection<Movie> Movie { get; set; }
+        public virtual ICollection<Movie> Movies { get; set; }
 
-        public Character(string name, string alias, List<string> abilities, ICollection<Movie> movies)
+        public Character(string name, string alias, List<string> abilities)
         {
             Name = name;
             Alias = alias;
             Abilities = abilities;
-            Movie = movies;
-            Id = Guid.NewGuid().ToString();
+            Movies = new HashSet<Movie>();
+ 
         }
         public Character()
         {
-            Movie = new HashSet<Movie>();
-            Id = Guid.NewGuid().ToString();
+            Movies = new HashSet<Movie>();
+        
         }
 
         public override string ToString()
