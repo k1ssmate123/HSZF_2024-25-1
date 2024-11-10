@@ -1,0 +1,141 @@
+{
+  "actors": [
+    {
+      "name": "Robert Downey Jr.",
+      "age": 58,
+      "nationality": "American",
+      "characters": [
+        {
+          "name": "Tony Stark",
+          "alias": "Iron Man",
+          "abilities": [
+            "Genius intellect",
+            "Advanced technology",
+            "Powered armor suit"
+          ],
+          "movies": [
+            {
+              "title": "Iron Man",
+              "release_year": 2008,
+              "director": "Jon Favreau",
+              "box_office": 585200000
+            },
+            {
+              "title": "Iron Man 2",
+              "release_year": 2010,
+              "director": "Jon Favreau",
+              "box_office": 623900000
+            },
+            {
+              "title": "Avengers: Endgame",
+              "release_year": 2019,
+              "director": "Anthony and Joe Russo",
+              "box_office": 2798000000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chris Evans",
+      "age": 42,
+      "nationality": "American",
+      "characters": [
+        {
+          "name": "Steve Rogers",
+          "alias": "Captain America",
+          "abilities": [
+            "Enhanced strength",
+            "Superhuman endurance",
+            "Expert tactician"
+          ],
+          "movies": [
+            {
+              "title": "Captain America: The First Avenger",
+              "release_year": 2011,
+              "director": "Joe Johnston",
+              "box_office": 370600000
+            },
+            {
+              "title": "Captain America: The Winter Soldier",
+              "release_year": 2014,
+              "director": "Anthony and Joe Russo",
+              "box_office": 714400000
+            },
+            {
+              "title": "Avengers: Endgame",
+              "release_year": 2019,
+              "director": "Anthony and Joe Russo",
+              "box_office": 2798000000
+            }
+          ]
+        },
+        {
+          "name": "Johnny Storm",
+          "alias": "Human Torch",
+          "abilities": [
+            "Pyrokinesis",
+            "Flight",
+            "Fire resistance"
+          ],
+          "movies": [
+            {
+              "title": "Fantastic Four",
+              "release_year": 2005,
+              "director": "Tim Story",
+              "box_office": 333500000
+            },
+            {
+              "title": "Fantastic Four: Rise of the Silver Surfer",
+              "release_year": 2007,
+              "director": "Tim Story",
+              "box_office": 301900000
+            },
+            {
+              "title": "Deadpool & Wolverine",
+              "release_year": 2024,
+              "director": "Shawn Levy",
+              "box_office": 1152000000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Scarlett Johansson",
+      "age": 39,
+      "nationality": "American",
+      "characters": [
+        {
+          "name": "Natasha Romanoff",
+          "alias": "Black Widow",
+          "abilities": [
+            "Expert martial artist",
+            "Master spy",
+            "Advanced weaponry"
+          ],
+          "movies": [
+            {
+              "title": "Iron Man 2",
+              "release_year": 2010,
+              "director": "Jon Favreau",
+              "box_office": 623900000
+            },
+            {
+              "title": "The Avengers",
+              "release_year": 2012,
+              "director": "Joss Whedon",
+              "box_office": 1519000000
+            },
+            {
+              "title": "Black Widow",
+              "release_year": 2021,
+              "director": "Cate Shortland",
+              "box_office": 379600000
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

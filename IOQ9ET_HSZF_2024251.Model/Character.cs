@@ -38,20 +38,28 @@ namespace IOQ9ET_HSZF_2024251.Model
             Alias = alias;
             Abilities = abilities;
             Movies = new HashSet<Movie>();
- 
+    
+        }
+        public Character(string name, string alias, List<string> abilities, HashSet<Movie> movies) : this(name,alias,abilities)
+        {
+            Movies = movies;
         }
         public Character()
         {
             Movies = new HashSet<Movie>();
-        
         }
-
+     
         public override string ToString()
         {
             string tostring = $"Characters Name: {Name}\n\tAlias: {Alias}\n\tAbilities:";
             foreach (string s in Abilities)
             {
                 tostring += "\n\t\t"+s;
+            }
+            tostring += "\n\tMovies:";
+            foreach (var item in Movies)
+            {
+                tostring += "\n\t\t"+item.Title;
             }
             return tostring;
         }

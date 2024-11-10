@@ -1,5 +1,6 @@
 ﻿using IOQ9ET_HSZF_2024251.Model;
 using Newtonsoft.Json;
+using System.Data.Entity;
 namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
 
 {
@@ -14,43 +15,33 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
     public interface IActorDataProvider
     {
         Actor GetActorByName(string actorName);
-        //Movie GetMovieByDirector(string directorName);
         ICollection<Character> GetCharactersByActorName(string actorName);
-        HashSet<Character> ListByCharacter();
-        HashSet<Actor> ListByActorName();
-        HashSet<Movie> ListByMovie();
-
+        HashSet<Actor> ListByActor();
 
         void AddActor(string name, int age, string nationality);
-        void RemoveActor(Actor actor);
+        void EditActor(Actor actor, string name, int age, string nationality);
+
+        void Remove<T>(T item);
         void ConnectCharacterToActor(Character character, string actorName);
-
-
-
         public event ListingEvent ListingEventHandler;
-        List<Movie> GetMoviesByDirector(string directorName);
-
     }
     public class ActorDataProvider : IActorDataProvider
     {
         private readonly AppDbContext context;
-
-
         public event ListingEvent ListingEventHandler;
         public ActorDataProvider(AppDbContext context)
         {
             this.context = context;
-            context.ReadJson();
-
+    
         }
-
+       
 
         #region Get all data in list 
-        public HashSet<Actor> ListByActorName()
+        public HashSet<Actor> ListByActor()
         {
             HashSet<Actor> actors = new HashSet<Actor>();
             ListingEventHandler.Invoke("All actors have been listed at: " + DateTime.Now);
-            foreach (var item in context.Actors)
+            foreach (var item in context.Actors.Include(t=>t.Character))
             {
                 actors.Add(item);
             }
@@ -58,62 +49,53 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
         }
 
 
-        public HashSet<Character> ListByCharacter()
-        {
-            HashSet<Character> characters = new HashSet<Character>();
-            ListingEventHandler.Invoke("All characters have been listed at: " + DateTime.Now);
-            foreach (var item in context.Actors)
-            {
-                foreach (var chars in item.Character)
-                {
-                    characters.Add(chars as Character);
-                }
-            }
-            return characters;
-        }
 
-        public HashSet<Movie> ListByMovie()
-        {
-            HashSet<Movie> movieList = new HashSet<Movie>();
-            ListingEventHandler.Invoke("All movies have been listed at: " + DateTime.Now);
 
-            foreach (var item in context.Actors)
+        #endregion
+        #region Remove Items
+        public void Remove<T>(T item)
+        {
+            if (item is Actor)
             {
-                foreach (var chars in item.Character)
-                {
-                    foreach (var movies in chars.Movies)
-                    {
-                        movieList.Add(movies as Movie);
-                    }
-                }
+                context.Remove(item);
             }
-            return movieList;
+            else if (item is Character)
+            {
+
+                var delete = context.Characters.FirstOrDefault(x => x.Equals(item));
+
+                context.Remove(delete);
+
+            }
+            else if (item is Movie)
+            {
+                var delete = context.Movies.FirstOrDefault(x => x.Equals(item));
+                context.Remove(delete);
+            }
+
+
+            context.SaveChanges();
         }
         #endregion
-
+        #region Add items
         public void ConnectCharacterToActor(Character character, string actorName)
         {
             GetActorByName(actorName).Character.Add(character);
+
             context.SaveChanges();
         }
 
-
-        public void RemoveActor(Actor actor)
-        {
-            context.Remove(actor);
-            context.SaveChanges();
-        }
-
-
-        public Actor GetActorByName(string actorName)
-        {
-            return context.Actors.FirstOrDefault(x => x.Name.ToLower() == actorName.ToLower());
-        }
 
         public void AddActor(string name, int age, string nationality)
         {
             context.Actors.Add(new Actor(name, age, nationality));
             context.SaveChanges();
+        }
+        #endregion
+        #region Return by condition
+        public Actor GetActorByName(string actorName)
+        {
+            return context.Actors.FirstOrDefault(x => x.Name.ToLower() == actorName.ToLower());
         }
 
         public ICollection<Character> GetCharactersByActorName(string actorName)
@@ -124,12 +106,28 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
             //return context.Actors.Select(x=>GetActorByName(actorName));
         }
 
-        public List<Movie> GetMoviesByDirector(string directorName)
+
+
+        public void EditActor(Actor actor, string name, int age, string nationality)
         {
-
-            return ListByMovie().Where(x => x.Director.Split(' ')[0] == directorName).ToList();
-
-            //return context.Actors.Select(x => x.Characters.Select(y => y.Movies.Where(z => z.Director.Contains(directorName))).Select(a=>a));
+            if (name != "")
+            {
+                actor.Name = name;
+            }
+            if (age > 0 && age < 100)
+            {
+                actor.Age = age;
+            }
+            if (nationality != "")
+            {
+                actor.Nationality = nationality;
+            }
         }
+
+
+
+
+        #endregion
+
     }
 }

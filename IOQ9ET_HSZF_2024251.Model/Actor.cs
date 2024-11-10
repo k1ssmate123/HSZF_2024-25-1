@@ -28,8 +28,10 @@ namespace IOQ9ET_HSZF_2024251.Model
             Name = name;
             Age = age;
             Nationality = nationality;
+            Character = new HashSet<Character>();
         }
-
+  
+        
         public Actor()
         {
             Character = new HashSet<Character>();

@@ -1,21 +1,19 @@
 ﻿using IOQ9ET_HSZF_2024251.Model;
 using IOQ9ET_HSZF_2024251.Persistence.MsSql;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IOQ9ET_HSZF_2024251.Application
 {
     public interface IActors
     {
         Actor GetActorByName(string actorName);
-        //Movie GetMovieByDirector(string directorName);
         ICollection<Character> GetCharactersByActorName(string actorName);
         HashSet<Actor> ListByActor();
-        HashSet<Character> ListByCharacter();     
-        HashSet<Movie> ListByMovie();
+
         void AddActor(string name, int age, string nationality);
-        void RemoveActor(Actor actor);
+        void EditActor(Actor actor, string name, int age, string nationality);
+
+        void Remove<T>(T item);
         void ConnectCharacterToActor(Character character, string actorName);
-        ICollection<Movie> GetMoviesByDirector(string directorName);
     }
     public class ActorsService : IActors
     {
@@ -24,48 +22,37 @@ namespace IOQ9ET_HSZF_2024251.Application
         {
             ActorDataProvider = actorDataProvider;
             string path = Path.Combine(Directory.GetCurrentDirectory(), DateTime.Now.Month.ToString());
-            if(!Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
 
-            path = Path.Combine(path, DateTime.Now.Day.ToString()+".txt");
-            ActorDataProvider.ListingEventHandler += x=>File.WriteAllText(path,x);
+            path = Path.Combine(path, DateTime.Now.Day.ToString() + ".txt");
+            ActorDataProvider.ListingEventHandler += x => File.WriteAllText(path, x);
         }
 
-     
-        public void RemoveActor(Actor actor)
-        {
-            ActorDataProvider.RemoveActor(actor);
 
-        }
+
         public Actor GetActorByName(string actorName)
         {
-            return ActorDataProvider.GetActorByName(actorName); 
+            return ActorDataProvider.GetActorByName(actorName);
         }
+
+
 
         public HashSet<Actor> ListByActor()
         {
-            return ActorDataProvider.ListByActorName();
+            return ActorDataProvider.ListByActor();
         }
-        public HashSet<Character> ListByCharacter()
-        {
-            return ActorDataProvider.ListByCharacter();
-        }
-        public HashSet<Movie> ListByMovie()
-        {
-            return ActorDataProvider.ListByMovie();
-        }
+
+
 
         public ICollection<Character> GetCharactersByActorName(string actorName)
         {
             return ActorDataProvider.GetCharactersByActorName(actorName);
         }
 
-        public ICollection<Movie> GetMoviesByDirector(string directorName)
-        {
-            return ActorDataProvider.GetMoviesByDirector(directorName);
-        }
+
         public void AddActor(string name, int age, string nationality)
         {
             ActorDataProvider.AddActor(name, age, nationality);
@@ -73,6 +60,18 @@ namespace IOQ9ET_HSZF_2024251.Application
         public void ConnectCharacterToActor(Character character, string actorName)
         {
             ActorDataProvider.ConnectCharacterToActor(character, actorName);
+        }
+
+
+
+        public void Remove<T>(T item)
+        {
+            ActorDataProvider.Remove(item);
+        }
+
+        public void EditActor(Actor actor, string name, int age, string nationality)
+        {
+            ActorDataProvider.EditActor(actor, name, age, nationality);
         }
     }
 }
