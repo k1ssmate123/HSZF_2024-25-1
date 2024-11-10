@@ -20,7 +20,7 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
 
         public AppDbContext()
         {
-            Database.EnsureDeleted();
+          
             Database.EnsureCreated();
             ReadJson();
 
@@ -31,6 +31,7 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
             {
                 return;
             }
+
             string path = Directory.GetCurrentDirectory();
             path = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(path).FullName).FullName).FullName).FullName;
             path = Path.Combine(path, "movies.json");
