@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NUnit.Framework;
 
-namespace UnitTests
+namespace IOQ9ET_HSZF_2024251.Tests
 {
     class Tests
     {

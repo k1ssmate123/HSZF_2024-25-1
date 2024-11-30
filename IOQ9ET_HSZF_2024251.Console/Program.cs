@@ -53,7 +53,7 @@ namespace IOQ9ET_HSZF_2024251
             var addMenu = new ConsoleMenu(args, level: 1);
             addMenu.Add("Add new actor", () => NewActor(actorService))
             .Add("Add new character", () => NewCharacter(actorService))
-            .Add("Add new movie", () => NewMovie(characterService))
+            .Add("Add new movie", () => NewMovie(characterService,movieService))
             .Add("Add character to a movie", () => CharacterToMovie(characterService,movieService))
              .Add("Back", ConsoleMenu.Close);
 
@@ -186,7 +186,7 @@ namespace IOQ9ET_HSZF_2024251
             Console.WriteLine("Character succesfully added!");
             Console.ReadKey();
         }
-        static void NewMovie(ICharacters characterService)
+        static void NewMovie(ICharacters characterService, IMovies movieService)
         {
             Console.Clear();
             Console.Write("Title: ");
@@ -204,6 +204,7 @@ namespace IOQ9ET_HSZF_2024251
             Console.Write("What characters are in this movie?: (Press ENTER to stop)");
             string charName = "";
             int count = 1;
+            List<Character> characterToConnect = new List<Character>();
             do
             {
                 Console.Write("\nCharacter #" + count + ": ");
@@ -215,11 +216,16 @@ namespace IOQ9ET_HSZF_2024251
                 }
                 if (charName != "")
                 {
-                    characterService.ConnectMovieToCharacter(new Movie(title, year, director, boxoffice), charName);
+                   characterToConnect.Add(characterService.GetCharacterByName(charName));
                 }
                 count++;
             } while (charName != "");
-
+            Movie final = new Movie(title, year, director, boxoffice);
+            movieService.AddMovie(final);
+            foreach (var item in characterToConnect)
+            {
+                characterService.ConnectMovieToCharacter(final, item.Name);
+            }
             Console.WriteLine("Movie succesfully added!");
             Console.ReadKey();
         }

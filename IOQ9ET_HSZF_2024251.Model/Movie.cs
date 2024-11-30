@@ -17,6 +17,7 @@ namespace IOQ9ET_HSZF_2024251.Model
         
 
         [Key]
+        public int Id { get; set; }
         [JsonProperty("title")]
         public string Title { get; set; }
 

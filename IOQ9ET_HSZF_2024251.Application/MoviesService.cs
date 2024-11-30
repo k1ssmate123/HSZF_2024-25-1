@@ -13,6 +13,7 @@ namespace IOQ9ET_HSZF_2024251.Application
         HashSet<Movie> ListByMovie();
         void EditMovie(Movie movie, string title, int releaseYear, string director, uint boxOffice);
         ICollection<Movie> GetMoviesByDirector(string directorName);
+        void AddMovie(Movie movie);
     }
 
     public class MoviesService : IMovies
@@ -33,7 +34,10 @@ namespace IOQ9ET_HSZF_2024251.Application
         {
             MovieDataProvider.EditMovie(movie,title,releaseYear,director,boxOffice);
         }
-
+        public void AddMovie(Movie movie)
+        {
+            MovieDataProvider.AddMovie(movie);
+        }
         public ICollection<Movie> GetMoviesByDirector(string directorName)
         {
             return MovieDataProvider.GetMoviesByDirector(directorName);

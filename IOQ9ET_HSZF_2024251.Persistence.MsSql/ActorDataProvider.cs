@@ -69,7 +69,7 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
             }
             else if (item is Movie)
             {
-                var delete = context.Movies.FirstOrDefault(x => x.Equals(item));
+                var delete = context.Movies.FirstOrDefault(x => x.Title == (item as Movie).Title);
                 context.Remove(delete);
             }
 
@@ -122,6 +122,10 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
             {
                 actor.Nationality = nationality;
             }
+
+
+
+
         }
 
 

@@ -10,7 +10,7 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
         ICollection<Movie> GetMoviesByDirector(string directorName);
         public event ListingEvent ListingEventHandler;
 
-
+        void AddMovie(Movie movie);
 
     }
 
@@ -56,6 +56,13 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
             {
                 movie.BoxOffice = boxOffice;
             }
+          
+        }
+
+        public void AddMovie(Movie movie)
+        {
+            context.Movies.Add(movie);
+            context.SaveChanges();
         }
         public ICollection<Movie> GetMoviesByDirector(string directorName)
         {

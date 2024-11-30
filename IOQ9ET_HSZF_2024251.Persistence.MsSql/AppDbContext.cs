@@ -20,7 +20,7 @@ namespace IOQ9ET_HSZF_2024251.Persistence.MsSql
 
         public AppDbContext()
         {
-          
+            Database.EnsureDeleted();
             Database.EnsureCreated();
             ReadJson();
 
