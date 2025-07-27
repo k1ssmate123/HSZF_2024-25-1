@@ -78,7 +78,6 @@ namespace IOQ9ET_HSZF_2024251
                 Console.WriteLine(x.Name);
                 foreach (var item in x.Character)
                 {
-                    
                     Console.WriteLine("\t" + item.Name);
                 }
             }))
