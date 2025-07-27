@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IOQ9ET_HSZF_2024251.Model\IOQ9ET_HSZF_2024251.Model.csproj" />
+    <ProjectReference Include="..\IOQ9ET_HSZF_2024251.Model\Model.csproj" />
   </ItemGroup>
 
 </Project>
